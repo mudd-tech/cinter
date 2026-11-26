@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مركز المجد التعليمي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#15263D;--ink2:#56657A;--paper:#EEF1F4;--card:#FFFFFF;--line:#D9DFE7;--gold:#B8862B;--ok:#2F7D5B;--bad:#A8402F;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#E6ECF3;--ink2:#9AA8BA;--paper:#0E1826;--card:#16233A;--line:#2A3B55;--gold:#D9A441;--ok:#5FB58E;--bad:#E07A66;color-scheme:dark}}
+:root[data-theme="dark"]{--ink:#E6ECF3;--ink2:#9AA8BA;--paper:#0E1826;--card:#16233A;--line:#2A3B55;--gold:#D9A441;--ok:#5FB58E;--bad:#E07A66;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tajawal,system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;min-height:100vh}
+.wrap{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+aside{background:var(--ink);color:#fff;padding:24px 16px;display:flex;flex-direction:column;gap:6px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;margin-bottom:18px}
+.mark{width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--ink);display:grid;place-items:center;font-weight:800}
+nav button{all:unset;cursor:pointer;display:block;width:100%;padding:10px 12px;border-radius:8px;color:#C9D3E0;font-weight:500}
+nav button:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+nav button.on{background:rgba(255,255,255,.1);color:#fff;font-weight:700;box-shadow:inset 3px 0 0 var(--gold)}
+main{padding:28px clamp(16px,3vw,40px);max-width:1100px;width:100%}
+h1{font-size:26px;margin:0 0 4px}
+h2{font-size:19px;margin:0 0 14px}
+.sub{color:var(--ink2);margin:0 0 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:18px}
+.head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.head h2{margin:0}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;align-items:end}
+input,select{font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);width:100%;min-width:0}
+label{display:block;font-size:13px;color:var(--ink2);margin-bottom:4px}
+button{font:inherit;cursor:pointer}
+.primary{background:var(--ink);color:#fff;border:0;border-radius:8px;padding:10px 16px;font-weight:700}
+.ghost{background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:5px 10px}
+.danger{color:var(--bad);background:none;border:0;padding:4px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:right;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{color:var(--ink2);font-weight:500;font-size:14px}
+.num{font-variant-numeric:tabular-nums}
+.empty{color:var(--ink2);padding:18px 0;text-align:center}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;min-width:120px}
+.bar span{display:block;height:100%;background:var(--gold)}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:13px;font-weight:700}
+.ok{color:var(--ok)}.bad{color:var(--bad)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.stat b{display:block;font-size:24px}
+.stat small{color:var(--ink2)}
+a.wa{color:var(--ok);font-weight:700;text-decoration:none}
+#st{font-size:13px;color:var(--ink2);margin-top:14px}
+@media print{aside,#st,.noprint{display:none!important}.wrap{display:block}main{padding:0}.card{border:0;padding:0}}
+@media (max-width:760px){
+ .wrap{grid-template-columns:1fr}
+ aside{flex-direction:row;overflow-x:auto;padding:12px;align-items:center}
+ .brand{margin:0 8px 0 0;white-space:nowrap}
+ nav{display:flex;gap:4px}
+ nav button{white-space:nowrap;padding:8px 10px}
+ table{font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<aside>
+ <div class="brand"><span class="mark">م</span><span>مركز المجد<small style="display:block;font-weight:500;color:#C9D3E0;font-size:12px">لوحة المدرس</small></span></div>
+ <nav>
+  <button data-view="students" class="on">الطلاب</button>
+  <button data-view="groups">المجموعات والمنهج</button>
+  <button data-view="att">الحضور</button>
+  <button data-view="pay">المدفوعات</button>
+  <button data-view="grades">الدرجات</button>
+  <button data-view="report">التقرير الأسبوعي</button>
+ </nav>
+</aside>
+<main>
+ <div id="main"></div>
+ <div id="st"></div>
+</main>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Math.random().toString(36).slice(2, 10);
+const today = () => new Date().toISOString().slice(0, 10);
+const thisMonth = () => new Date().toISOString().slice(0, 7);
+
+let S = {students: [], groups: [], att: {}, pay: {}, grades: []};
+let docRef = null, saveT = null, view = 'students';
+let dirty = false;
+const UI = {q: '', attGroup: '', attDate: today(), payMonth: thisMonth(), gradeStudent: ''};
+
+function normalize(d) {
+  return Object.assign({students: [], groups: [], att: {}, pay: {}, grades: []}, d || {});
+}
+function setStatus(t) { $('#st').textContent = t; }
+
+function save() {
+  try { localStorage.setItem('almajd', JSON.stringify(S)); } catch (e) {}
+  dirty = true;
+  if (!docRef) return;
+  setStatus('بيتحفظ…');
+  clearTimeout(saveT);
+  saveT = setTimeout(() => {
+    dirty = false;
+    docRef.set(JSON.parse(JSON.stringify(S)))
+      .then(() => setStatus('كل حاجة محفوظة'))
+      .catch(() => setStatus('مش قادر أحفظ دلوقتي، جرب تاني'));
+  }, 500);
+}
+
+function weekStats(s) {
+  const since = new Date(Date.now() - 6 * 864e5).toISOString().slice(0, 10);
+  let present = 0, absent = 0;
+  Object.keys(S.att).forEach(k => {
+    const [gid, date] = k.split('|');
+    if (gid !== s.group || date < since || date > today()) return;
+    const r = S.att[k];
+    if (s.id in r) { r[s.id] ? present++ : absent++; }
+  });
+  return {present, absent, since};
+}
+function groupName(id) { const g = S.groups.find(x => x.id === id); return g ? g.name : '—'; }
+function groupOpts(sel, blank = 'بدون مجموعة') {
+  return `<option value="">${blank}</option>` + S.groups.map(g =>
+    `<option value="${g.id}" ${g.id === sel ? 'selected' : ''}>${esc(g.name)}</option>`).join('');
+}
+function waLink(phone, msg) {
+  let p = String(phone || '').replace(/\D/g, '');
+  if (!p) return '';
+  if (p.startsWith('0')) p = '20' + p.slice(1);
+  return `https://wa.me/${p}?text=${encodeURIComponent(msg)}`;
+}
+
+/* ---------- Views ---------- */
+const VIEWS = {
+  students() {
+    return `<h1>الطلاب</h1><p class="sub">ضيف الطالب مرة واحدة، وبعدين كل حاجة مرتبطة بيه.</p>
+    <section class="card"><h2>طالب جديد</h2>
+      <div class="form">
+        <div><label>اسم الطالب</label><input id="f-name"></div>
+        <div><label>اسم ولي الأمر</label><input id="f-parent"></div>
+        <div><label>موبايل ولي الأمر</label><input id="f-phone" inputmode="tel"></div>
+        <div><label>المجموعة</label><select id="f-group">${groupOpts('')}</select></div>
+        <div><label>المصاريف الشهرية (جنيه)</label><input id="f-fee" type="number" min="0"></div>
+        <button class="primary" data-act="addStudent">إضافة الطالب</button>
+      </div></section>
+    <section class="card">
+      <div class="head"><h2>كل الطلاب (<span id="cnt">${S.students.length}</span>)</h2>
+        <input id="q" placeholder="ابحث باسم الطالب" style="max-width:260px" value="${esc(UI.q)}"></div>
+      <table><thead><tr><th>الطالب</th><th>المجموعة</th><th>ولي الأمر</th><th>المصاريف</th><th></th></tr></thead>
+      <tbody id="stbody">${studentRows()}</tbody></table>
+    </section>`;
+  },
+  groups() {
+    const cards = S.groups.map(g => {
+      const pct = g.total ? Math.min(100, Math.round(g.done / g.total * 100)) : 0;
+      const n = S.students.filter(s => s.group === g.id).length;
+      return `<div class="card">
+        <div class="head"><div><h2>${esc(g.name)}</h2><div class="sub" style="margin:0">${esc(g.schedule || 'لم يحدد موعد')} · ${n} طالب</div></div>
+        <button class="danger" data-act="delGroup" data-id="${g.id}">حذف المجموعة</button></div>
+        <div class="head"><div class="bar" style="flex:1"><span style="width:${pct}%"></span></div>
+          <div class="num">وصلنا لدرس ${g.done} من ${g.total || '؟'}</div></div>
+        <div style="display:flex;gap:8px">
+          <button class="ghost" data-act="lesson" data-id="${g.id}" data-d="-1">درس ناقص</button>
+          <button class="primary" data-act="lesson" data-id="${g.id}" data-d="1">تم درس جديد</button>
+        </div></div>`;
+    }).join('') || '<div class="empty">لسه مفيش مجموعات. ضيف أول مجموعة تحت.</div>';
+    return `<h1>المجموعات والمنهج</h1><p class="sub">اعرف كل مجموعة وصلت لفين في المنهج.</p>
+    <section class="card"><h2>مجموعة جديدة</h2>
+      <div class="form">
+        <div><label>اسم المجموعة</label><input id="g-name"></div>
+        <div><label>المواعيد</label><input id="g-sched" placeholder="مثلاً: سبت وثلاثاء 6م"></div>
+        <div><label>عدد الدروس في المنهج</label><input id="g-total" type="number" min="1"></div>
+        <button class="primary" onclick="ACTIONS.addGroup()">إضافة المجموعة</button>
+      </div></section>${cards}`;
+  },
+  att() {
+    const list = S.students.filter(s => !UI.attGroup || s.group === UI.attGroup);
+    const key = UI.attGroup + '|' + UI.attDate;
+    const rec = S.att[key] || {};
+    const present = list.filter(s => rec[s.id]).length;
+    const rows = list.map(s => `<tr><td>${esc(s.name)}</td>
+      <td><input type="checkbox" data-chk="att" data-sid="${s.id}" ${rec[s.id] ? 'checked' : ''} style="width:20px;height:20px"> <span>${rec[s.id] ? 'حاضر' : 'غايب'}</span></td></tr>`).join('');
+    return `<h1>الحضور</h1><p class="sub">اختار المجموعة والتاريخ، وعلّم الحاضرين.</p>
+    <section class="card"><div class="form">
+      <div><label>المجموعة</label><select id="att-g">${groupOpts(UI.attGroup, 'كل الطلاب')}</select></div>
+      <div><label>التاريخ</label><input id="att-d" type="date" value="${UI.attDate}"></div></div></section>
+    <div class="stats"><div class="stat"><small>حاضر</small><b class="ok">${present}</b></div>
+      <div class="stat"><small>غايب</small><b class="bad">${list.length - present}</b></div></div>
+    <section class="card">${list.length ? `<table><tbody>${rows}</tbody></table>` :
+      '<div class="empty">مفيش طلاب في المجموعة دي.</div>'}</section>`;
+  },
+  pay() {
+    const m = UI.payMonth;
+    const rec = S.pay[m] || {};
+    const expected = S.students.reduce((a, s) => a + Number(s.fee || 0), 0);
+    const collected = S.students.filter(s => rec[s.id]).reduce((a, s) => a + Number(s.fee || 0), 0);
+    const rows = S.students.map(s => {
+      const paid = !!rec[s.id];
+      const msg = `مساء الخير ${s.parent || ''}، تذكير بمصاريف ${s.name} لشهر ${m} بقيمة ${s.fee} جنيه. شكراً لتعاونكم - مركز المجد التعليمي`;
+      const link = !paid && s.phone ? `<a class="wa" target="_blank" rel="noopener" href="${waLink(s.phone, msg)}">تذكير واتساب</a>` : '';
+      return `<tr><td>${esc(s.name)}</td><td class="num">${Number(s.fee || 0)} ج</td>
+        <td><input type="checkbox" data-chk="pay" data-sid="${s.id}" ${paid ? 'checked' : ''} style="width:20px;height:20px"> <span class="${paid ? 'ok' : 'bad'}">${paid ? 'اتدفع' : 'لسه'}</span></td>
+        <td>${link}</td></tr>`;
+    }).join('');
+    return `<h1>المدفوعات</h1><p class="sub">علّم اللي دفعوا، وابعت تذكير للباقيين بضغطة.</p>
+    <section class="card"><div class="form"><div><label>الشهر</label><input id="pay-m" type="month" value="${m}"></div></div></section>
+    <div class="stats"><div class="stat"><small>المتوقع</small><b class="num">${expected} ج</b></div>
+      <div class="stat"><small>اتحصّل</small><b class="num ok">${collected} ج</b></div>
+      <div class="stat"><small>باقي</small><b class="num bad">${expected - collected} ج</b></div></div>
+    <section class="card">${S.students.length ? `<table><thead><tr><th>الطالب</th><th>المصاريف</th><th>الحالة</th><th></th></tr></thead><tbody>${rows}</tbody></table>`
+      : '<div class="empty">ضيف طلاب الأول عشان تظهر المدفوعات.</div>'}</section>`;
+  },
+  report() {
+    const s = S.students.find(x => x.id === UI.reportStudent);
+    const opts = S.students.map(x => `<option value="${x.id}" ${x.id === UI.reportStudent ? 'selected' : ''}>${esc(x.name)}</option>`).join('');
+    const pick = `<section class="card"><div class="form noprint"><div><label>الطالب</label><select id="rep-s"><option value="">اختار طالب</option>${opts}</select></div></div></section>`;
+    if (!s) return `<h1>التقرير الأسبوعي</h1><p class="sub">اختار الطالب عشان تجهز تقرير الأسبوع.</p>${pick}`;
+    const w = weekStats(s);
+    const g = S.groups.find(x => x.id === s.group);
+    const paid = !!(S.pay[thisMonth()] || {})[s.id];
+    const last = S.grades.filter(x => x.studentId === s.id).sort((a, b) => (b.date || '').localeCompare(a.date || '')).slice(0, 3);
+    const gl = last.map(x => `<tr><td>${esc(x.exam)}</td><td class="num">${esc(x.date)}</td><td class="num">${x.score} / ${x.max}</td></tr>`).join('');
+    return `<h1>التقرير الأسبوعي</h1><p class="sub">تقرير جاهز لولي الأمر في دقيقة.</p>${pick}
+    <section class="card" id="report">
+      <div class="head"><div><h2>${esc(s.name)}</h2><div class="sub" style="margin:0">${g ? esc(g.name) + ' · ' + esc(g.schedule || '') : 'بدون مجموعة'}</div></div>
+      <div class="sub num" style="margin:0">من ${w.since} لـ ${today()}</div></div>
+      <div class="stats">
+        <div class="stat"><small>حضور الأسبوع</small><b class="ok">${w.present}</b></div>
+        <div class="stat"><small>غياب الأسبوع</small><b class="bad">${w.absent}</b></div>
+        <div class="stat"><small>وصلنا لدرس</small><b class="num">${g ? g.done + ' من ' + (g.total || '؟') : '—'}</b></div>
+        <div class="stat"><small>مصاريف الشهر</small><b class="${paid ? 'ok' : 'bad'}">${paid ? 'اتدفعت' : 'لسه'}</b></div>
+      </div>
+      ${gl ? `<table><thead><tr><th>آخر امتحانات</th><th>التاريخ</th><th>الدرجة</th></tr></thead><tbody>${gl}</tbody></table>` : ''}
+      <div style="margin-top:14px"><label for="rep-note">ملاحظة المدرس</label><textarea id="rep-note" rows="3" style="width:100%;font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink)" placeholder="مثلاً: ابنك بقى أحسن في القراءة، ومحتاج يركز في الواجب"></textarea></div>
+      <div class="noprint" style="display:flex;gap:8px;margin-top:14px"><button class="primary" data-act="sendReport">ابعت على واتساب ولي الأمر</button><button class="ghost" onclick="window.print()">طباعة</button></div>
+    </section>`;
+  },
+  grades() {
+    const opts = S.students.map(s => `<option value="${s.id}" ${s.id === UI.gradeStudent ? 'selected' : ''}>${esc(s.name)}</option>`).join('');
+    const list = [...S.grades].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    const rows = list.map(g => {
+      const st = S.students.find(s => s.id === g.studentId);
+      const pct = Math.round(g.score / g.max * 100);
+      return `<tr><td>${esc(st ? st.name : 'طالب محذوف')}</td><td>${esc(g.exam)}</td><td class="num">${esc(g.date)}</td>
+        <td class="num ${pct >= 50 ? 'ok' : 'bad'}">${g.score} / ${g.max} (${pct}%)</td>
+        <td><button class="danger" data-act="delGrade" data-id="${g.id}">حذف</button></td></tr>`;
+    }).join('');
+    return `<h1>الدرجات</h1><p class="sub">سجّل درجات الامتحانات لكل طالب وتابع مستواه.</p>
+    <section class="card"><h2>تسجيل درجة</h2>
+      <div class="form">
+        <div><label>الطالب</label><select id="gr-s">${opts}</select></div>
+        <div><label>اسم الامتحان</label><input id="gr-e" placeholder="مثلاً: امتحان شهر أكتوبر"></div>
+        <div><label>التاريخ</label><input id="gr-d" type="date" value="${today()}"></div>
+        <div><label>الدرجة</label><input id="gr-sc" type="number" min="0"></div>
+        <div><label>من</label><input id="gr-mx" type="number" min="1" value="100"></div>
+        <button class="primary" data-act="addGrade">حفظ الدرجة</button>
+      </div></section>
+    <section class="card">${list.length ? `<table><thead><tr><th>الطالب</th><th>الامتحان</th><th>التاريخ</th><th>الدرجة</th><th></th></tr></thead><tbody>${rows}</tbody></table>`
+      : '<div class="empty">لسه مفيش درجات مسجلة.</div>'}</section>`;
+  }
+};
+
+function studentRows() {
+  const q = UI.q.trim();
+  const list = S.students.filter(s => !q || s.name.includes(q));
+  if (!list.length) return `<tr><td colspan="5" class="empty">${S.students.length ? 'مفيش نتيجة للبحث.' : 'لسه مفيش طلاب. ضيف أول طالب من الفورم فوق.'}</td></tr>`;
+  return list.map(s => `<tr><td>${esc(s.name)}</td><td>${esc(groupName(s.group))}</td>
+    <td>${esc(s.parent)}<br><small class="num" style="color:var(--ink2)">${esc(s.phone)}</small></td>
+    <td class="num">${Number(s.fee || 0)} ج</td>
+    <td><button class="danger" data-act="delStudent" data-id="${s.id}">حذف</button></td></tr>`).join('');
+}
+
+function render() {
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.view === view));
+  $('#main').innerHTML = VIEWS[view]();
+}
+
+/* ---------- Actions ---------- */
+const val = id => (document.getElementById(id)?.value || '').trim();
+
+const ACTIONS = {
+  addStudent() {
+    const name = val('f-name');
+    if (!name) return setStatus('اكتب اسم الطالب الأول');
+    S.students.push({id: uid(), name, parent: val('f-parent'), phone: val('f-phone'), group: val('f-group'), fee: Number(val('f-fee')) || 0});
+    save(); render();
+  },
+  delStudent({id}) {
+    if (!confirm('تحذف الطالب ده؟')) return;
+    S.students = S.students.filter(s => s.id !== id); save(); render();
+  },
+  addGroup() {
+    const name = val('g-name');
+    if (!name) return setStatus('اكتب اسم المجموعة الأول');
+    S.groups.push({id: uid(), name, schedule: val('g-sched'), total: Number(val('g-total')) || 0, done: 0});
+    save(); render(); setStatus('تمت إضافة المجموعة: ' + name);
+  },
+  delGroup({id}) {
+    if (!confirm('تحذف المجموعة؟ الطلاب هيفضلوا لكن من غير مجموعة.')) return;
+    S.groups = S.groups.filter(g => g.id !== id);
+    S.students.forEach(s => { if (s.group === id) s.group = ''; });
+    save(); render();
+  },
+  lesson({id, d}) {
+    const g = S.groups.find(x => x.id === id); if (!g) return;
+    g.done = Math.max(0, g.done + Number(d));
+    save(); render();
+  },
+  addGrade() {
+    const sid = val('gr-s'), exam = val('gr-e'), score = Number(val('gr-sc')), max = Number(val('gr-mx'));
+    if (!sid) return setStatus('ضيف طالب الأول');
+    if (!exam) return setStatus('اكتب اسم الامتحان');
+    if (!(max > 0) || isNaN(score)) return setStatus('اكتب الدرجة والدرجة الكلية');
+    UI.gradeStudent = sid;
+    S.grades.push({id: uid(), studentId: sid, exam, date: val('gr-d') || today(), score, max});
+    save(); render();
+  },
+  sendReport() {
+    const s = S.students.find(x => x.id === UI.reportStudent);
+    if (!s) return setStatus('اختار طالب الأول');
+    const w = weekStats(s);
+    const g = S.groups.find(x => x.id === s.group);
+    const note = val('rep-note');
+    const msg = `مساء الخير ${s.parent || ''}\nتقرير الأسبوع للطالب ${s.name}:\n• الحضور: ${w.present} محاضرة\n• الغياب: ${w.absent}\n` + (g ? `• وصلنا في المنهج لدرس ${g.done} من ${g.total || '؟'}\n` : '') + (note ? `\nملاحظة المدرس: ${note}\n` : '') + `\nمركز المجد التعليمي`;
+    const url = waLink(s.phone, msg);
+    if (!url) return setStatus('ضيف موبايل ولي الأمر في بيانات الطالب');
+    window.open(url, '_blank', 'noopener');
+  },
+  delGrade({id}) {
+    if (!confirm('تحذف الدرجة دي؟')) return;
+    S.grades = S.grades.filter(g => g.id !== id); save(); render();
+  }
+};
+
+document.addEventListener('click', e => {
+  const v = e.target.closest('[data-view]');
+  if (v) { view = v.dataset.view; return render(); }
+  const b = e.target.closest('[data-act]');
+  if (b && ACTIONS[b.dataset.act]) ACTIONS[b.dataset.act](b.dataset);
+});
+
+document.addEventListener('input', e => {
+  if (e.target.id === 'q') { UI.q = e.target.value; const t = $('#stbody'); if (t) t.innerHTML = studentRows(); }
+});
+
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.id === 'rep-s') { UI.reportStudent = t.value; return render(); }
+  if (t.id === 'att-g') { UI.attGroup = t.value; return render(); }
+  if (t.id === 'att-d') { UI.attDate = t.value || today(); return render(); }
+  if (t.id === 'pay-m') { UI.payMonth = t.value || thisMonth(); return render(); }
+  if (t.dataset.chk === 'att') {
+    const key = UI.attGroup + '|' + UI.attDate;
+    S.att[key] = S.att[key] || {};
+    S.att[key][t.dataset.sid] = t.checked;
+    save(); return render();
+  }
+  if (t.dataset.chk === 'pay') {
+    S.pay[UI.payMonth] = S.pay[UI.payMonth] || {};
+    S.pay[UI.payMonth][t.dataset.sid] = t.checked;
+    save(); return render();
+  }
+});
+
+/* ---------- Storage: synced per user when available, local otherwise ---------- */
+(async () => {
+  render();
+  let loaded = false;
+  try {
+    const local = localStorage.getItem('almajd');
+    if (local) S = normalize(JSON.parse(local));
+  } catch (e) {}
+  render();
+
+  const claude = window.claude;
+  if (!claude) return setStatus('البيانات بتتحفظ على الجهاز ده بس');
+  try {
+    const user = await claude.use('user');
+    const db = await claude.use('db');
+    const id = user ? await user.id() : null;
+    if (db && id) {
+      docRef = db.collection('data/users/' + id).doc('state');
+      docRef.onSnapshot(snap => {
+        if (snap.hasPendingWrites || dirty) return;
+        if (snap.exists) S = normalize(snap.data());
+        loaded = true;
+        render();
+        setStatus('كل حاجة محفوظة ومتزامنة على أجهزتك');
+      }, () => setStatus('مش قادر أوصل للبيانات دلوقتي'));
+      setTimeout(() => { if (!loaded) setStatus('الاتصال بطيء، البيانات ممكن تكون قديمة'); }, 10000);
+    } else {
+      setStatus('البيانات بتتحفظ على الجهاز ده بس');
+    }
+  } catch (e) {
+    setStatus('البيانات بتتحفظ على الجهاز ده بس');
+  }
+})();
+</script>
+</body>
+</html>
