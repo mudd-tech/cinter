@@ -48,7 +48,16 @@ th{color:var(--ink2);font-weight:500;font-size:14px}
 .stat small{color:var(--ink2)}
 a.wa{color:var(--ok);font-weight:700;text-decoration:none}
 #st{font-size:13px;color:var(--ink2);margin-top:14px}
-@media print{aside,#st,.noprint{display:none!important}.wrap{display:block}main{padding:0}.card{border:0;padding:0}}
+@media print{aside,#st,.noprint{display:none!important}.wrap{display:block}main{padding:0}.card{border:0;padding:0}body.pr-rc #main,body.pr-rc aside,body.pr-rc #st{display:none!important}.rc-wrap{position:static;background:none;display:block}}
+.rc-wrap{position:fixed;inset:0;background:rgba(10,20,35,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.rc-wrap.open{display:flex}
+.rc-paper{background:#fff;color:#15263D;width:min(480px,100%);border-radius:12px;padding:28px;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.rc-brand{font-size:18px}
+.rc-top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #15263D;padding-bottom:12px;margin-bottom:12px}
+.rc-tbl{width:100%;border-collapse:collapse}
+.rc-tbl th,.rc-tbl td{padding:9px 6px;border-bottom:1px solid #D9DFE7;text-align:right}
+.rc-tbl th{width:40%;color:#56657A;font-weight:500}
+.rc-sign{display:flex;justify-content:space-between;margin-top:42px;color:#56657A;font-size:14px;border-top:1px dashed #D9DFE7;padding-top:8px}
 @media (max-width:760px){
  .wrap{grid-template-columns:1fr}
  aside{flex-direction:row;overflow-x:auto;padding:12px;align-items:center}
@@ -64,7 +73,8 @@ a.wa{color:var(--ok);font-weight:700;text-decoration:none}
 <aside>
  <div class="brand"><span class="mark">م</span><span>مركز المجد<small style="display:block;font-weight:500;color:#C9D3E0;font-size:12px">لوحة المدرس</small></span></div>
  <nav>
-  <button data-view="students" class="on">الطلاب</button>
+  <button data-view="home" class="on">الرئيسية</button>
+  <button data-view="students">الطلاب</button>
   <button data-view="groups">المجموعات والمنهج</button>
   <button data-view="att">الحضور</button>
   <button data-view="pay">المدفوعات</button>
@@ -77,6 +87,7 @@ a.wa{color:var(--ok);font-weight:700;text-decoration:none}
  <div id="st"></div>
 </main>
 </div>
+<div id="rcpt" class="rc-wrap" onclick="if(event.target===this)this.classList.remove('open')"></div>
 
 <script>
 const $ = s => document.querySelector(s);
@@ -86,7 +97,7 @@ const today = () => new Date().toISOString().slice(0, 10);
 const thisMonth = () => new Date().toISOString().slice(0, 7);
 
 let S = {students: [], groups: [], att: {}, pay: {}, grades: []};
-let docRef = null, saveT = null, view = 'students';
+let docRef = null, saveT = null, view = 'home';
 let dirty = false;
 const UI = {q: '', attGroup: '', attDate: today(), payMonth: thisMonth(), gradeStudent: ''};
 
@@ -113,8 +124,8 @@ function weekStats(s) {
   const since = new Date(Date.now() - 6 * 864e5).toISOString().slice(0, 10);
   let present = 0, absent = 0;
   Object.keys(S.att).forEach(k => {
-    const [gid, date] = k.split('|');
-    if (gid !== s.group || date < since || date > today()) return;
+    const date = k.split('|')[1];
+    if (date < since || date > today()) return;
     const r = S.att[k];
     if (s.id in r) { r[s.id] ? present++ : absent++; }
   });
@@ -134,6 +145,26 @@ function waLink(phone, msg) {
 
 /* ---------- Views ---------- */
 const VIEWS = {
+  home() {
+    let presentToday = 0, markedToday = 0;
+    Object.keys(S.att).forEach(k => {
+      if (k.split('|')[1] !== today()) return;
+      Object.values(S.att[k]).forEach(v => { markedToday++; if (v) presentToday++; });
+    });
+    const rec = S.pay[thisMonth()] || {};
+    const collected = S.students.filter(s => rec[s.id]).reduce((a, s) => a + Number(s.fee || 0), 0);
+    const unpaid = S.students.filter(s => !rec[s.id]).length;
+    const groups = S.groups.map(g => `<div class="stat"><small>${esc(g.name)}</small><b class="num" style="font-size:18px">${g.done} من ${g.total || '؟'} درس</b></div>`).join('');
+    return `<h1>أهلاً بيك في مركز المجد</h1><p class="sub">ملخص سريع لليوم والشهر ده.</p>
+    <div class="stats">
+      <div class="stat"><small>عدد الطلاب</small><b class="num">${S.students.length}</b></div>
+      <div class="stat"><small>المجموعات</small><b class="num">${S.groups.length}</b></div>
+      <div class="stat"><small>حضور النهارده</small><b class="num ok">${presentToday} من ${markedToday}</b></div>
+      <div class="stat"><small>اتحصّل الشهر ده</small><b class="num ok">${collected} ج</b></div>
+      <div class="stat"><small>لسه مادفعوش</small><b class="num bad">${unpaid} طالب</b></div>
+    </div>
+    <section class="card"><h2>المجموعات</h2>${groups ? `<div class="stats" style="margin:0">${groups}</div>` : '<div class="empty">لسه مفيش مجموعات.</div>'}</section>`;
+  },
   students() {
     return `<h1>الطلاب</h1><p class="sub">ضيف الطالب مرة واحدة، وبعدين كل حاجة مرتبطة بيه.</p>
     <section class="card"><h2>طالب جديد</h2>
@@ -202,7 +233,7 @@ const VIEWS = {
       const link = !paid && s.phone ? `<a class="wa" target="_blank" rel="noopener" href="${waLink(s.phone, msg)}">تذكير واتساب</a>` : '';
       return `<tr><td>${esc(s.name)}</td><td class="num">${Number(s.fee || 0)} ج</td>
         <td><input type="checkbox" data-chk="pay" data-sid="${s.id}" ${paid ? 'checked' : ''} style="width:20px;height:20px"> <span class="${paid ? 'ok' : 'bad'}">${paid ? 'اتدفع' : 'لسه'}</span></td>
-        <td>${link}</td></tr>`;
+        <td>${link}${paid ? `<button class="ghost" data-act="receipt" data-id="${s.id}">وصل</button>` : ''}</td></tr>`;
     }).join('');
     return `<h1>المدفوعات</h1><p class="sub">علّم اللي دفعوا، وابعت تذكير للباقيين بضغطة.</p>
     <section class="card"><div class="form"><div><label>الشهر</label><input id="pay-m" type="month" value="${m}"></div></div></section>
@@ -328,6 +359,31 @@ const ACTIONS = {
     if (!url) return setStatus('ضيف موبايل ولي الأمر في بيانات الطالب');
     window.open(url, '_blank', 'noopener');
   },
+  receipt({id}) {
+    const s = S.students.find(x => x.id === id); if (!s) return;
+    const m = UI.payMonth;
+    const [y, mo] = m.split('-');
+    const no = 'RC-' + y + mo + '-' + id.slice(-4).toUpperCase();
+    const g = S.groups.find(x => x.id === s.group);
+    $('#rcpt').innerHTML = `<div class="rc-paper">
+      <div class="rc-top"><div><b class="rc-brand">مركز المجد التعليمي</b><div class="sub" style="margin:0">إيصال سداد مصاريف</div></div>
+      <div class="num" style="text-align:left"><small>رقم الإيصال</small><br><b>${no}</b></div></div>
+      <table class="rc-tbl">
+        <tr><th>اسم الطالب</th><td>${esc(s.name)}</td></tr>
+        <tr><th>ولي الأمر</th><td>${esc(s.parent || '—')}</td></tr>
+        <tr><th>المجموعة</th><td>${esc(g ? g.name : '—')}</td></tr>
+        <tr><th>عن شهر</th><td class="num">${mo}/${y}</td></tr>
+        <tr><th>المبلغ المدفوع</th><td class="num"><b>${Number(s.fee || 0)} جنيه</b></td></tr>
+        <tr><th>تاريخ الإصدار</th><td class="num">${today()}</td></tr>
+      </table>
+      <div class="rc-sign"><span>توقيع المستلم</span><span>ختم المركز</span></div>
+      <div class="noprint" style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px">
+        <button class="ghost" data-act="closeRcpt">إغلاق</button>
+        <button class="primary" onclick="document.body.classList.add('pr-rc');window.print();setTimeout(()=>document.body.classList.remove('pr-rc'),400)">طباعة الإيصال</button>
+      </div></div>`;
+    $('#rcpt').classList.add('open');
+  },
+  closeRcpt() { $('#rcpt').classList.remove('open'); },
   delGrade({id}) {
     if (!confirm('تحذف الدرجة دي؟')) return;
     S.grades = S.grades.filter(g => g.id !== id); save(); render();
